@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build_static_test:
-    working_directory: /FISCO-BCOS
+    working_directory: /BF_BLOCKCHAIN
     docker:
       - image: ubuntu:16.04
     steps:
@@ -39,7 +39,7 @@ jobs:
             bash <(curl -s https://codecov.io/bash) -C $CIRCLE_SHA1 -g ./deps/** > /dev/null
 
   build_test_guomi:
-    working_directory: /FISCO-BCOS-GM
+    working_directory: /BF_BLOCKCHAIN-GM
     docker:
         - image: centos:7
     steps:
@@ -70,15 +70,15 @@ jobs:
           name: Unit test
           command: |
             cd build
-            ./bin/test-fisco-bcos -- --testpath=../test/data/ 
+            ./bin/test-BF_BLOCKCHAIN -- --testpath=../test/data/ 
       - run:
           name: Run GM nodes
           command: |
             cd build
-            ../tools/build_chain.sh -l "127.0.0.1:4" -e bin/fisco-bcos -g && cd nodes/127.0.0.1 && bash start_all.sh && sleep 2 && [[ $(ps -ef| grep fisco-bcos |grep -v grep | wc -l) == 4 ]]
+            ../tools/build_chain.sh -l "127.0.0.1:4" -e bin/BF_BLOCKCHAIN -g && cd nodes/127.0.0.1 && bash start_all.sh && sleep 2 && [[ $(ps -ef| grep BF_BLOCKCHAIN |grep -v grep | wc -l) == 4 ]]
 
   build_static:
-    working_directory: /FISCO-BCOS
+    working_directory: /BF_BLOCKCHAIN
     docker:
       - image: ubuntu:18.04
     steps:
@@ -107,17 +107,17 @@ jobs:
           name: Upload binary
           command: |
             cd build/bin
-            tar -zcf fisco-bcos.tar.gz fisco-bcos
+            tar -zcf BF_BLOCKCHAIN.tar.gz BF_BLOCKCHAIN
       - store_artifacts:
-          path: /FISCO-BCOS/build/bin/fisco-bcos.tar.gz
-          destination: fisco-bcos.tar.gz
+          path: /BF_BLOCKCHAIN/build/bin/BF_BLOCKCHAIN.tar.gz
+          destination: BF_BLOCKCHAIN.tar.gz
       # - persist_to_workspace:
       #     root: build
       #     paths:
       #       - bin
 
   build_guomi:
-    working_directory: /FISCO-BCOS-GM
+    working_directory: /BF_BLOCKCHAIN-GM
     docker:
       - image: ubuntu:18.04
     steps:
@@ -146,17 +146,17 @@ jobs:
           name: Upload binary
           command: |
             cd build/bin
-            tar -zcf fisco-bcos-gm.tar.gz fisco-bcos
+            tar -zcf BF_BLOCKCHAIN-gm.tar.gz BF_BLOCKCHAIN
       - store_artifacts:
-          path: /FISCO-BCOS-GM/build/bin/fisco-bcos-gm.tar.gz
-          destination: fisco-bcos-gm.tar.gz
+          path: /BF_BLOCKCHAIN-GM/build/bin/BF_BLOCKCHAIN-gm.tar.gz
+          destination: BF_BLOCKCHAIN-gm.tar.gz
       # - persist_to_workspace:
       #     root: build
       #     paths:
       #       - bin
 
   deploy_static:
-    working_directory: /FISCO-BCOS
+    working_directory: /BF_BLOCKCHAIN
     docker:
       - image: ubuntu:18.04
     steps:
@@ -176,16 +176,16 @@ jobs:
           name: Strip
           command: |
             cd build/bin
-            strip fisco-bcos
-            tar -zcf fisco-bcos.tar.gz fisco-bcos
+            strip BF_BLOCKCHAIN
+            tar -zcf BF_BLOCKCHAIN.tar.gz BF_BLOCKCHAIN
       - run:
           name: Upload to GitHub Release
           command: |
             go get github.com/tcnksm/ghr
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} /FISCO-BCOS/build/bin/fisco-bcos.tar.gz
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} /BF_BLOCKCHAIN/build/bin/BF_BLOCKCHAIN.tar.gz
 
   deploy_guomi:
-    working_directory: /FISCO-BCOS-GM
+    working_directory: /BF_BLOCKCHAIN-GM
     docker:
       - image: ubuntu:18.04
     steps:
@@ -205,13 +205,13 @@ jobs:
           name: Strip
           command: |
             cd build/bin
-            strip fisco-bcos
-            tar -zcf fisco-bcos-gm.tar.gz fisco-bcos
+            strip BF_BLOCKCHAIN
+            tar -zcf BF_BLOCKCHAIN-gm.tar.gz BF_BLOCKCHAIN
       - run:
           name: Upload to GitHub Release
           command: |
             go get github.com/tcnksm/ghr
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} /FISCO-BCOS-GM/build/bin/fisco-bcos-gm.tar.gz
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} /BF_BLOCKCHAIN-GM/build/bin/BF_BLOCKCHAIN-gm.tar.gz
 
 workflows:
   version: 2
