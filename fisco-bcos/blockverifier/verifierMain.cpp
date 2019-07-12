@@ -42,9 +42,6 @@ int main(int argc, char* argv[])
 
     auto stateFactory = std::make_shared<dev::storagestate::StorageStateFactory>(dev::u256(0));
 
-    // auto stateFactory = std::make_shared<dev::mptstate::MPTStateFactory>(
-    //    dev::u256(0), "test_state", dev::h256(0), dev::WithExisting::Trust);
-
     auto executiveContextFactory = std::make_shared<dev::blockverifier::ExecutiveContextFactory>();
     executiveContextFactory->setStateFactory(stateFactory);
     executiveContextFactory->setStateStorage(storage);
@@ -286,13 +283,6 @@ int main(int argc, char* argv[])
                 "6f6cb9f5f91ea00ea02726ce5352276dbb7bc166dfe036a0ce67ea25848823284c845bf3cf5c6969c"
                 "f");
             dev::eth::Transaction tx(ref(rlpBytes), dev::eth::CheckTransaction::Everything);
-            // dev::KeyPair key_pair(dev::Secret::random());
-            // dev::Secret sec = key_pair.secret();
-            // u256 maxBlockLimit = u256(1000);
-            // tx.setNonce(tx.nonce() + u256(1));
-            // tx.setBlockLimit(u256(blockChain->number()) + maxBlockLimit);
-            // dev::Signature sig = sign(sec, tx.sha3(dev::eth::WithoutSignature));
-            // tx.updateSignature(SignatureStruct(sig));
             LOG(INFO) << "Tx " << tx;
 
             dev::eth::Transaction tx2(ref(rlpBytesCall), dev::eth::CheckTransaction::Everything);
