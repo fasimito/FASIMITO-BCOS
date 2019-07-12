@@ -1,25 +1,3 @@
-/**
- * @CopyRight:
- * FISCO-BCOS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * FISCO-BCOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with FISCO-BCOS.  If not, see <http://www.gnu.org/licenses/>
- * (c) 2016-2018 fisco-dev contributors.
- *
- * @brief
- *
- * @file BlockChainImp.cpp
- * @author:
- * @date 2018-09-21
- */
 #include <libblockchain/BlockChainImp.h>
 #include <libblockverifier/ExecutiveContext.h>
 #include <libdevcore/CommonData.h>
@@ -46,13 +24,6 @@ namespace dev
 {
 namespace test
 {
-//   const std::string m_extraDbName_currentState = "currentState";
-//   const std::string SYS_KEY_CURRENT_NUMBER = "currentNumber";
-//   const std::string SYS_VALUE = "value";
-//   const std::string SYS_VALUE = "value";
-//   const std::string m_txHash2Block = "txHash2Block";
-//   const std::string m_number2hash = "number2hash";
-//   const std::string m_hash2Block = "hash2Block";
 
 static std::string const c_commonHash =
     "067150c07dab4facb7160e075548007e067150c07dab4facb7160e075548007e";

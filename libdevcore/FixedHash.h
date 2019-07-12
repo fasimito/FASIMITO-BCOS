@@ -1,26 +1,3 @@
-/*
-    This file is part of cpp-ethereum.
-
-    cpp-ethereum is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    cpp-ethereum is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/** @file FixedHash.h
- * @author Gav Wood <i@gavwood.com>
- * @date 2014
- *
- * The FixedHash fixed-size "hash" container type.
- */
-
 #pragma once
 
 #include "CommonData.h"
@@ -32,7 +9,6 @@
 
 namespace dev
 {
-/// Compile-time calculation of Log2 of constant values.
 template <unsigned N>
 struct StaticLog2
 {
@@ -52,9 +28,6 @@ struct StaticLog2<1>
 
 extern std::random_device s_fixedHashEngine;
 
-/// Fixed-size raw-byte array container type, with an API optimised for storing hashes.
-/// Transparently converts to/from the corresponding arithmetic type; this will
-/// assume the data contained in the hash is big-endian.
 template <unsigned N>
 class FixedHash
 {

@@ -1,25 +1,3 @@
-/**
- * @CopyRight:
- * FISCO-BCOS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * FISCO-BCOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with FISCO-BCOS.  If not, see <http://www.gnu.org/licenses/>
- * (c) 2016-2018 fisco-dev contributors.
- *
- * @brief: simple demo of para tx executor
- *
- * @file: para_main.cpp
- * @author: catli, jimmyshi
- * @date 2019-01-15
- */
 #include <libblockchain/BlockChainImp.h>
 #include <libblockverifier/BlockVerifier.h>
 #include <libdevcore/easylog.h>
@@ -63,7 +41,6 @@ void genTxUserAddBlock(Block& _block, size_t _userNum)
         u256 nonce = u256(utcTime());
         Transaction tx(value, gasPrice, gas, dest, data, nonce);
         tx.setBlockLimit(250);
-        // sec = KeyPair::create().secret();
         Signature sig = sign(*sec, tx.sha3(WithoutSignature));
         tx.updateSignature(SignatureStruct(sig));
         txs.push_back(tx);
@@ -119,7 +96,6 @@ void genTxUserTransfer(Block& _block, size_t _userNum, size_t _txNum)
         u256 nonce = u256(utcTime());
         Transaction tx(value, gasPrice, gas, dest, data, nonce);
         tx.setBlockLimit(250);
-        // sec = KeyPair::create().secret();
         Signature sig = sign(*sec, tx.sha3(WithoutSignature));
         tx.updateSignature(SignatureStruct(sig));
         txs.push_back(tx);
@@ -184,8 +160,6 @@ static void startExecute(int _totalUser, int _totalTxs)
 
     Block block;
     genTxUserTransfer(block, _totalUser, _totalTxs);
-    // while (true)
-    // getchar();
     for (int i = 0; i < 10; i++)
     {
         blockVerifier->serialExecuteBlock(block, parentBlockInfo);

@@ -1,25 +1,3 @@
-/*
- * @CopyRight:
- * FISCO-BCOS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * FISCO-BCOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with FISCO-BCOS.  If not, see <http://www.gnu.org/licenses/>
- * (c) 2016-2018 fisco-dev contributors.
- */
-/** @file Common.cpp
- * @author Asherli
- * @date 2018
- */
-
-
 #include "libdevcrypto/AES.h"
 #include "libdevcrypto/Common.h"
 #include "libdevcrypto/CryptoPP.h"
@@ -44,9 +22,6 @@ SignatureStruct::SignatureStruct(Signature const& _s)
 {
     *(Signature*)this = _s;
 }
-
-// SignatureStruct::SignatureStruct(VType _v, h256 const& _r, h256 const& _s) : r(_r), s(_s), v(_v)
-// {}
 
 SignatureStruct::SignatureStruct(h256 const& _r, h256 const& _s, VType _v) : r(_r), s(_s), v(_v) {}
 SignatureStruct::SignatureStruct(u256 const& _r, u256 const& _s, NumberVType _v)
@@ -101,19 +76,16 @@ void SignatureStruct::check() const noexcept
 
 namespace
 {
-/**
- * @brief : init secp256k1_context globally(maybe for secure consider)
- * @return secp256k1_context const* : global static secp256k1_context
- */
-secp256k1_context const* getCtx()
-{
-    static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> s_ctx{
-        secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY),
-        &secp256k1_context_destroy};
-    return s_ctx.get();
-}
 
-}  // namespace
+    secp256k1_context const* getCtx()
+    {
+        static std::unique_ptr<secp256k1_context, decltype(&secp256k1_context_destroy)> s_ctx{
+            secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY),
+            &secp256k1_context_destroy};
+        return s_ctx.get();
+    }
+
+}
 
 bool dev::SignatureStruct::isValid() const noexcept
 {

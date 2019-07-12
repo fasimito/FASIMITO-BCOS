@@ -1,23 +1,3 @@
-/**
- * @CopyRight:
- * FISCO-BCOS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * FISCO-BCOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with FISCO-BCOS.  If not, see <http://www.gnu.org/licenses/>
- * (c) 2016-2018 fisco-dev contributors.
- *
- * @file storage_main.cpp
- * @author: xingqiangbai
- * @date 2018-11-14
- */
 #include "libinitializer/Initializer.h"
 #include "libstorage/MemoryTableFactory.h"
 #include "rocksdb/db.h"
@@ -75,20 +55,15 @@ void testMemoryTable2(size_t round, size_t count, bool verify)
 
     CachedStorage::Ptr cachedStorage = std::make_shared<CachedStorage>();
     cachedStorage->setBackend(rocksdbStorage);
-    // cachedStorage->startClearThread();
     cachedStorage->init();
     cachedStorage->setMaxCapacity(32 * 1024 * 1024);
     cachedStorage->setMaxForwardBlock(5);
-
     auto factoryFactory = std::make_shared<MemoryTableFactoryFactory2>();
     factoryFactory->setStorage(cachedStorage);
-
     auto createFactory = factoryFactory->newTableFactory(dev::h256(0), 0);
     createFactory->createTable("test_data", "key", "value", 1, Address(0x0));
     createFactory->createTable("tx_hash_2_block", "tx_hash", "block_hash", 1, Address(0x0));
-
     createFactory->commitDB(dev::h256(0), 1);
-
     std::set<std::string> accounts;
     for (size_t i = 0; i < count; ++i)
     {
@@ -98,19 +73,14 @@ void testMemoryTable2(size_t round, size_t count, bool verify)
         entry->setField("key", key);
         entry->setField("value", "0");
         entry->setForce(true);
-
         dataTable->insert(key, entry);
     }
-
     createFactory->commitDB(dev::h256(0), 1);
-
     auto start = std::chrono::system_clock::now();
-
     for (size_t i = 0; i < round; ++i)
     {
         auto roundStart = std::chrono::system_clock::now();
         auto factory = factoryFactory->newTableFactory(dev::h256(0), i + 2);
-
         tbb::parallel_for(
             tbb::blocked_range<size_t>(0, count), [&](const tbb::blocked_range<size_t>& range) {
                 for (size_t j = range.begin(); j < range.end(); ++j)
@@ -119,41 +89,31 @@ void testMemoryTable2(size_t round, size_t count, bool verify)
                     {
                         auto dataTable = factory->openTable("test_data");
                         auto txTable = factory->openTable("tx_hash_2_block");
-
                         auto key = (boost::format("[%08d]") % j).str();
                         auto condition = dataTable->newCondition();
                         auto dataEntries = dataTable->select(key, condition);
-
                         auto dataEntry = dataEntries->get(0);
-
                         auto newDataEntry = dataTable->newEntry();
                         newDataEntry->setField("value",
                             boost::lexical_cast<std::string>(
                                 boost::lexical_cast<size_t>(dataEntry->getField("value")) + 1));
-
                         dataTable->update(key, newDataEntry, condition);
-
                         std::string txKey = (boost::format("[%32d]-[%32d]") % j % k).str();
                         auto txEntry = txTable->newEntry();
                         txEntry->setField("tx_hash", txKey);
                         txEntry->setField("block_hash", txKey);
                         txEntry->setForce(true);
-
                         txTable->insert(txKey, txEntry);
                     }
                 }
             });
-
         factory->commitDB(dev::h256(0), i + 2);
-
         auto roundEnd = std::chrono::system_clock::now();
         std::chrono::duration<double> roundElapsed = roundEnd - roundStart;
         std::cout << "Round " << i << " elapsed: " << roundElapsed.count() << std::endl;
-
         if (verify)
         {
             std::cout << "Checking round " << i << " ...";
-
             auto factory = factoryFactory->newTableFactory(dev::h256(0), round + 2);
             tbb::parallel_for(
                 tbb::blocked_range<size_t>(0, count), [&](const tbb::blocked_range<size_t>& range) {
@@ -161,13 +121,10 @@ void testMemoryTable2(size_t round, size_t count, bool verify)
                     {
                         auto dataTable = factory->openTable("test_data");
                         auto txTable = factory->openTable("tx_hash_2_block");
-
                         auto key = (boost::format("[%08d]") % j).str();
                         auto condition = dataTable->newCondition();
                         auto dataEntries = dataTable->select(key, condition);
-
                         auto dataEntry = dataEntries->get(0);
-
                         size_t value = boost::lexical_cast<size_t>(dataEntry->getField("value"));
                         if (value != 50 * (i + 1))
                         {
@@ -176,14 +133,11 @@ void testMemoryTable2(size_t round, size_t count, bool verify)
                         }
                     }
                 });
-
             std::cout << "Check round " << i << " finshed";
         }
     }
-
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-
     std::cout << "Execute time elapsed " << std::setiosflags(std::ios::fixed)
               << std::setprecision(4) << elapsed.count() << std::endl;
 }
@@ -192,7 +146,6 @@ int main(int argc, char* argv[])
 {
     (void)argc;
     (void)argv;
-
     boost::multi_index_container<std::pair<std::string, std::string>,
         boost::multi_index::indexed_by<boost::multi_index::sequenced<>,
             boost::multi_index::hashed_unique<
@@ -201,14 +154,11 @@ int main(int argc, char* argv[])
     m_mru.push_back(std::make_pair("a", "b"));
     m_mru.push_back(std::make_pair("b", "c"));
     m_mru.push_back(std::make_pair("a", "b"));
-
     for (auto it = m_mru.begin(); it != m_mru.end();)
     {
         std::cout << "item: " << it->first << ", " << it->second;
-
         it = m_mru.erase(it);
     }
-
 #if 0
     if (argc < 3)
     {
@@ -236,6 +186,5 @@ int main(int argc, char* argv[])
 
     testMemoryTable2(round, count, verify);
 #endif
-
     return 0;
 }

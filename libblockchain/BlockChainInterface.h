@@ -1,25 +1,3 @@
-/*
- * @CopyRight:
- * FISCO-BCOS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * FISCO-BCOS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with FISCO-BCOS.  If not, see <http://www.gnu.org/licenses/>
- * (c) 2016-2018 fisco-dev contributors.
- */
-
-/**
- * @brief : external interface of blockchain
- * @author: mingzhenliu
- * @date: 2018-09-21
- */
 #pragma once
 
 #include <libdevcore/FixedHash.h>
@@ -42,10 +20,7 @@ enum class CommitResult
     ERROR_PARENT_HASH = -2,
     ERROR_COMMITTING = -3
 };
-// Configuration item written to the table of genesis block,
-// groupMark/consensusType/storageType/stateType excluded.
-// modification 2019.3.20: add timestamp filed into the GenesisBlockParam for setting the timestamp
-// for the zero block
+
 struct GenesisBlockParam
 {
     std::string groupMark;      // Data written to extra data of genesis block.

@@ -49,3 +49,7 @@ deps/**
 
 # macOS
 .DS_Store
+
+# Clion
+.idea
+cmake-build-debug

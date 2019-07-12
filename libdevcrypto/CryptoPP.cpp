@@ -1,24 +1,3 @@
-/*
-    This file is part of FISCO-BCOS.
-
-    FISCO-BCOS is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    FISCO-BCOS is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FISCO-BCOS.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/** @file CryptoPP.cpp
- * @author Alex Leverington <nessence@gmail.com> Asherli
- * @date 2018
- */
-
 #include "CryptoPP.h"
 #include "Hash.h"
 #include <cryptopp/eccrypto.h>
@@ -26,9 +5,6 @@
 #include <cryptopp/osrng.h>
 #include <libdevcore/Assertions.h>
 #include <libdevcore/Guards.h>
-
-
-// static_assert(CRYPTOPP_VERSION == 565, "Wrong Crypto++ version");
 
 using namespace dev;
 using namespace dev::crypto;

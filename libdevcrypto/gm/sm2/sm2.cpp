@@ -1,25 +1,3 @@
-/*
-    This file is part of fisco-bcos.
-
-    fisco-bcos is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    fisco-bcos is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with fisco-bcos.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * @file: sm2.cpp
- * @author: websterchen
- *
- * @date: 2018
- */
 #include "sm2.h"
 #include <libdevcore/easylog.h>
 #define SM3_DIGEST_LENGTH 32
@@ -67,7 +45,6 @@ bool SM2::genKey()
         goto err;
     }
     privateKey = pri;
-    // LOG(DEBUG)<<"SM2 PrivateKey:"<<privateKey;
 
     pub = EC_POINT_point2hex(
         sm2Group, EC_KEY_get0_public_key(sm2Key), POINT_CONVERSION_UNCOMPRESSED, NULL);
@@ -78,7 +55,6 @@ bool SM2::genKey()
     }
     publicKey = pub;
     lresult = true;
-    // LOG(DEBUG)<<"SM2 PublicKey:"<<publicKey;
 err:
     if (pri)
         OPENSSL_free(pri);
@@ -186,9 +162,6 @@ err:
 int SM2::verify(const string& _signData, int, const char* originalData, int originalDataLen,
     const string& publicKey)
 {
-    // LOG(DEBUG)<<"_signData:"<<_signData<<" _signDataLen:"<<_signDataLen<<"
-    // originalData:"<<(originalData,originalDataLen)<<"
-    // originalDataLen:"<<originalDataLen<<" publicKey:"<<publicKey;
     bool lresult = false;
     SM3_CTX sm3Ctx;
     EC_KEY* sm2Key = NULL;
@@ -199,7 +172,6 @@ int SM2::verify(const string& _signData, int, const char* originalData, int orig
     size_t zValueLen = SM3_DIGEST_LENGTH;
     string r = _signData.substr(0, 64);
     string s = _signData.substr(64, 64);
-    // LOG(DEBUG)<<"r:"<<r<<" s:"<<s;
 
     sm2Group = EC_GROUP_new_by_curve_name(NID_sm2);
     if (sm2Group == NULL)
@@ -264,7 +236,6 @@ int SM2::verify(const string& _signData, int, const char* originalData, int orig
         CRYPTO_LOG(ERROR) << "[SM2::veify] Error Of SM2 Verify";
         goto err;
     }
-    // LOG(DEBUG)<<"SM2 Verify successed.";
     lresult = true;
 err:
     if (sm2Key)
@@ -290,7 +261,6 @@ string SM2::priToPub(const string& pri)
     BN_init(&start);
     ctx = BN_CTX_new();
     char* pub = NULL;
-    // LOG(DEBUG)<<"pri:"<<pri;
     res = &start;
     BN_hex2bn(&res, (const char*)pri.c_str());
     sm2Key = EC_KEY_new_by_curve_name(NID_sm2);
@@ -313,7 +283,6 @@ string SM2::priToPub(const string& pri)
     pubKey = pub;
     pubKey = pubKey.substr(2, 128);
     pubKey = strlower((char*)pubKey.c_str());
-    // LOG(DEBUG)<<"PriToPub:"<<pubKey << "PriToPubLen:" << pubKey.length();
 err:
     if (pub)
         OPENSSL_free(pub);
