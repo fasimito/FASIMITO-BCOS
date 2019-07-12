@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.4)
-set(FISCO_BCOS_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake" CACHE PATH "The path to the cmake directory")
-list(APPEND CMAKE_MODULE_PATH ${FISCO_BCOS_CMAKE_DIR})
-project(FISCO-BCOS VERSION "2.0.0")
-set(VERSION_SUFFIX "-rc3")
+set(BLOCKCHAIN_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake" CACHE PATH "The path to the cmake directory")
+list(APPEND CMAKE_MODULE_PATH ${BLOCKCHAIN_CMAKE_DIR})
+project(BF_BLOCKCHAIN VERSION "1.0.0")
+set(VERSION_SUFFIX "-rc1")
 
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
@@ -68,8 +68,8 @@ add_subdirectory(libledger)
 add_subdirectory(librpc)
 add_subdirectory(libinitializer)
 add_subdirectory(libsecurity)
-# generate executable binary fisco-bcos
-add_subdirectory(fisco-bcos)
+# generate executable binary BF_BLOCKCHAIN
+add_subdirectory(BF_BLOCKCHAIN)
 
 
 if (TESTS)
